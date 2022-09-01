@@ -11,6 +11,9 @@ export const useTodoListStore = defineStore('todoList', {
     todoList: [] as ToDoItem[],
     id: 0,
   }),
+  getters: {
+
+  },
   actions: {
     addTodo(item: string) {
       this.todoList.push({ item, id: this.id++, completed: false })
@@ -25,6 +28,10 @@ export const useTodoListStore = defineStore('todoList', {
       if (todo)
         todo.completed = !todo.completed
     },
+    paginatedList(current: number, pages: number) {
+      return this.todoList.slice(current * pages - pages, current * pages)
+    },
+
   },
 },
 )

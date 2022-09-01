@@ -5,7 +5,7 @@ import { useTodoListStore } from '#imports'
 const todo = ref('')
 const store = useTodoListStore()
 const { todoList } = storeToRefs(store)
-const { toggleCompleted, deleteTodo, addTodo } = store
+const { toggleCompleted, deleteTodo, addTodo, paginatedList } = store
 const current = ref(1)
 const perPage = 5
 
@@ -19,14 +19,14 @@ function addItemAndClear(item: any) {
 
 <template>
   <q-form @submit.prevent="addTodo(todo)">
-    <q-input v-model="todo" square outlined label="Enter any text" />
+    <q-input v-model="todo" square outlined label="Enter any text" :rules="[val => val.length >= 3 || 'Please use maximum 3 characters']" :lazy-rules="true" />
     <div m3>
       <q-btn label="Add Todo" type="submit" color="primary" />
     </div>
   </q-form>
 
   <q-list bordered separator>
-    <div v-for="todox in todoList.slice(current * perPage - perPage, current * perPage)" :key="todox.id">
+    <div v-for="todox in paginatedList(current, perPage)" :key="todox.id">
       <q-item>
         <q-item-section>
           <q-checkbox v-model="todox.completed">
@@ -54,4 +54,3 @@ function addItemAndClear(item: any) {
   text-decoration: line-through;
 }
 </style>
-
